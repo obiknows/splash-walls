@@ -4,11 +4,13 @@
  * @flow
  */
 
+// require progress things
+var NetworkImage = require('react-native-image-progress')
+var Progress = require('react-native-progress')
 // require the randomn number generator
-var RandManager = require('./RandManager.js');
-
+var RandManager = require('./RandManager.js')
 // require the swiper for the swipes
-var Swiper = require('react-native-swiper');
+var Swiper = require('react-native-swiper')
 
 import React, { Component } from 'react';
 import {
@@ -17,11 +19,15 @@ import {
   StatusBar,
   Text,
   View,
-  ActivityIndicatorIOS
+  ActivityIndicatorIOS,
+  Dimensions
 } from 'react-native';
 
 
 const NUM_WALLPAPERS = 5;
+
+// get height & width
+var {width,height} = Dimensions.get('window')
 
 class SplashWalls extends Component {
   constructor(props) {
@@ -81,35 +87,22 @@ class SplashWalls extends Component {
       return (
         <Swiper
           dot={
-            <View style={{
-                backgroundColor:'rgba(255,255,255,.4)',
-                width:8,
-                height:8,
-                borderRadius:10,
-                marginLeft:3,
-                marginRight:3,
-                marginTop:3,
-                marginBottom:3
-            }} />
+            <View style={styles.dot} />
           }
           activedot={
-            <View style={{
-                backgroundColor:'#fff',
-                width:13,
-                height:13,
-                borderRadius:7,
-                marginLeft:7,
-                marginRight:7
-            }} />
+            <View style={styles.activeDot} />
           }
           loop={false}
-          onMomentumScrollEnd={this.onMomentumScrollEnd}
-          >
+          onMomentumScrollEnd={this.onMomentumScrollEnd}>
           {wallsJSON.map((wallpaper, index) => {
             return (
-              <Text key={index}>
-                {wallpaper.author}
-              </Text>
+              <View key={index}>
+                <NetworkImage
+                  source={{
+                    uri: `https://unsplash.it/${wallpaper.width}/${wallpaper.height}?image=${wallpaper.id}`}}
+                  style={styles.wallpaperImage}>
+                </NetworkImage>
+              </View>
             )
           })}
         </Swiper>
@@ -134,6 +127,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000',
   },
+  activeDot: {
+    backgroundColor: '#fff',
+    width: 13,
+    height: 13,
+    borderRadius: 7,
+    marginLeft: 7,
+    marginRight: 7
+  },
+  dot: {
+    backgroundColor:'rgba(255,255,255,.4)',
+    width: 8,
+    height: 8,
+    borderRadius: 10,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 3
+  },
+  wallpaperImage: {
+    flex: 1,
+    width: width,
+    height: height,
+    backgroundColor: '#000'
+  }
+
 });
+
+
 
 AppRegistry.registerComponent('SplashWalls', () => SplashWalls);
