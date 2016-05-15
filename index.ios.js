@@ -13,6 +13,11 @@ import {
   ActivityIndicatorIOS
 } from 'react-native';
 
+// require the randomn number generator
+var RandManager = require('./RandManager.js');
+
+const NUM_WALLPAPERS = 5;
+
 class SplashWalls extends Component {
   constructor(props) {
     super(props);
@@ -28,9 +33,19 @@ class SplashWalls extends Component {
     fetch(url)
       .then( response => response.json() )
       .then( jsonData => {
-        console.log(jsonData)
-        this.setState({isLoading:false})
+        var randomIds = RandManager.uniqueRandomNumbers(
+          NUM_WALLPAPERS, 0, jsonData.length)
+        var walls = []
+        randomIds.forEach(randomId => {
+          walls.push(jsonData[randomId])
+        })
+        this.setState({
+          isLoading:false,
+          wallsJSON: [].concat(walls)
+        })
       })
+
+
       .catch( error => console.log('Fetch error: ' + error))
   }
 
@@ -55,11 +70,20 @@ class SplashWalls extends Component {
   }
 
   renderResults() {
-    return (
-      <Text>
-        Data loaded.
-      </Text>
-    )
+    var {wallsJSON,isLoading} = this.state
+    if (!isLoading){
+      return (
+        <View>
+          {wallsJSON.map((wallpaper, index) => {
+            return (
+              <Text key={index}>
+                {wallpaper.author}
+              </Text>
+            )
+          })}
+        </View>
+      )
+    }
   }
 
   render() {
