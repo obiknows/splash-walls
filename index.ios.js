@@ -101,6 +101,12 @@ class SplashWalls extends Component {
                   source={{
                     uri: `https://unsplash.it/${wallpaper.width}/${wallpaper.height}?image=${wallpaper.id}`}}
                   style={styles.wallpaperImage}>
+                  <Text style={styles.label}>
+                    Photo by
+                  </Text>
+                  <Text style={styles.label_authorName}>
+                    {wallpaper.author}
+                  </Text>
                 </NetworkImage>
               </View>
             )
@@ -150,8 +156,30 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
     backgroundColor: '#000'
+  },
+  label: {
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 13,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    padding: 2,
+    paddingLeft: 5,
+    top: 20,
+    left: 20,
+    width: (width/2)
+  },
+  label_authorName: {
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    padding: 2,
+    paddingLeft: 5,
+    top: 41,
+    left: 20,
+    width: (width/2)
   }
-
 });
 
 
