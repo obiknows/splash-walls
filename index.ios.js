@@ -4,23 +4,29 @@
  * @flow
  */
 
+// require the randomn number generator
+var RandManager = require('./RandManager.js');
+
+// require the swiper for the swipes
+var Swiper = require('react-native-swiper');
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
+  StatusBar,
   Text,
   View,
   ActivityIndicatorIOS
 } from 'react-native';
 
-// require the randomn number generator
-var RandManager = require('./RandManager.js');
 
 const NUM_WALLPAPERS = 5;
 
 class SplashWalls extends Component {
   constructor(props) {
     super(props);
+    StatusBar.setHidden(true, 'slide')
 
     this.state = {
       wallsJSON: [],
@@ -73,7 +79,32 @@ class SplashWalls extends Component {
     var {wallsJSON,isLoading} = this.state
     if (!isLoading){
       return (
-        <View>
+        <Swiper
+          dot={
+            <View style={{
+                backgroundColor:'rgba(255,255,255,.4)',
+                width:8,
+                height:8,
+                borderRadius:10,
+                marginLeft:3,
+                marginRight:3,
+                marginTop:3,
+                marginBottom:3
+            }} />
+          }
+          activedot={
+            <View style={{
+                backgroundColor:'#fff',
+                width:13,
+                height:13,
+                borderRadius:7,
+                marginLeft:7,
+                marginRight:7
+            }} />
+          }
+          loop={false}
+          onMomentumScrollEnd={this.onMomentumScrollEnd}
+          >
           {wallsJSON.map((wallpaper, index) => {
             return (
               <Text key={index}>
@@ -81,7 +112,7 @@ class SplashWalls extends Component {
               </Text>
             )
           })}
-        </View>
+        </Swiper>
       )
     }
   }
